@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-PROJECT="otp-secure-messaging"
-
-echo "[+] Creating project: $PROJECT"
-mkdir -p $PROJECT
-cd $PROJECT
+echo "[+] Creating research-grade OTP project structure (in-place)"
 
 # Top level
 mkdir -p docs core frontend backend tests scripts data
@@ -27,8 +23,8 @@ touch core/client/{__init__.py,state_machine.py,encryptor.py,decryptor.py,pad_ma
 touch core/api/{__init__.py,entropy_api.py,pad_api.py,exchange_api.py,message_api.py,state_api.py}
 
 # Frontend
-mkdir -p frontend/{src,tauri}
 mkdir -p frontend/src/{ui,bridge,state,types}
+mkdir -p frontend/tauri/src-tauri
 
 touch frontend/{README.md,package.json,tsconfig.json}
 touch frontend/src/{main.tsx,App.tsx}
@@ -37,7 +33,6 @@ touch frontend/src/bridge/{entropy.ts,pad.ts,exchange.ts,message.ts,state.ts}
 touch frontend/src/state/{appState.ts,reducers.ts}
 touch frontend/src/types/protocol.ts
 
-mkdir -p frontend/tauri/src-tauri
 touch frontend/tauri/src-tauri/{main.rs,python_bridge.rs}
 touch frontend/tauri/tauri.conf.json
 
@@ -53,4 +48,4 @@ touch scripts/{generate_pad_from_image.py,run_randomness_tests.py,simulate_attac
 # Data
 mkdir -p data/{sample_images,pads,offsets,qr_frames,logs}
 
-echo "[✓] Scaffold complete."
+echo "[✓] In-place scaffold complete."
