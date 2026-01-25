@@ -2,6 +2,7 @@
 
 import os
 
+from core.pad.pad_store import save_pad
 from core.exchange.qr_encode import pad_to_qr_frames
 from core.exchange.qr_decode import decode_qr_frame
 from core.exchange.verifier import reassemble_and_verify
@@ -22,10 +23,22 @@ def export_pad_to_qr(pad_id: str):
     return output_dir, frame_count
 
 
-def import_pad_from_qr(frame_paths, expected_hash: str):
-    frames = []
+def import_pad_from_qr(frames_dir: str, expected_hash: str | None = None):
+    frame_files = sorted(
+        [
+            os.path.join(frames_dir, f)
+            for f in os.listdir(frames_dir)
+            if f.endswith(".png")
+        ]
+    )
 
-    for path in frame_paths:
+    frames = []
+    for path in frame_files:
         frames.append(decode_qr_frame(path))
 
-    return reassemble_and_verify(frames, expected_hash)
+    pad_bytes = reassemble_and_verify(frames, expected_hash)
+
+    # Save reconstructed pad
+    pad_id = save_pad(pad_bytes)
+
+    return pad_id
