@@ -1,14 +1,13 @@
 # ui_api_server.py
 
-from core.api.exchange_api import export_pad_to_qr, import_pad_from_qr
-
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from core.api.pad_api import generate_pad_from_image, load_pad
 from core.api.message_api import encrypt_message
 from core.client.offset_store import load_offsets
+from core.api.exchange_api import export_pad_to_qr, import_pad_from_qr
 
 
 app = FastAPI(title="OTP Local UI API")
