@@ -20,8 +20,12 @@ def pad_to_qr_frames(pad_bytes: bytes, chunk_size: int = 800):
     frame_paths = []
 
     for i, chunk in enumerate(chunks):
+        # Enforce bytes invariant for QR payload
+        if isinstance(chunk, str):
+            chunk = chunk.encode()
+
         frame = make_frame(i, total, chunk)
-        b64 = base64.b64encode(frame).decode()
+        b64 = base64.b64encode(frame).decode("ascii")
 
         img = qrcode.make(b64)
         path = os.path.join(QR_DIR, f"frame_{i:04d}.png")
