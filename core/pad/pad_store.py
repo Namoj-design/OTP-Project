@@ -19,6 +19,17 @@ def save_pad(pad_bytes: bytes) -> str:
 
     return pad_id
 
-def store_pad(pad_bytes: bytes) -> str:
-    # Backward-compat alias for older code paths
+def store_pad(pad_bytes: bytes, pad_id: str | None = None) -> str:
+    os.makedirs(PAD_DIR, exist_ok=True)
+
+    # If caller provided an ID (old code path), honor it
+    if pad_id is not None:
+        path = os.path.join(PAD_DIR, f"{pad_id}.bin")
+
+        with open(path, "wb") as f:
+            f.write(pad_bytes)
+
+        return pad_id
+
+    # Otherwise generate a fresh ID (new code path)
     return save_pad(pad_bytes)

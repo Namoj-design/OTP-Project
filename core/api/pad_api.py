@@ -14,7 +14,22 @@ def generate_pad_from_image(image_path: str, owner="local-user"):
     bits = thin_bits(bits, k=3)
     bits = von_neumann_extract(bits)
 
-    return create_pad_from_bits(bits, owner)
+    # Create pad bytes from extracted bits
+    pad_bytes = create_pad_from_bits(bits, owner)
+
+    # Persist pad and get pad_id
+    from core.pad.pad_store import store_pad
+    pad_id = store_pad(pad_bytes)
+
+    # Compute cryptographic hash of pad bytes
+    from core.pad.pad_hash import hash_pad
+    pad_hash = hash_pad(pad_bytes)
+
+    return {
+        "pad_id": pad_id,
+        "pad_size": len(pad_bytes),
+        "pad_hash": pad_hash,
+    }
 
 
 def load_pad(pad_id: str):
