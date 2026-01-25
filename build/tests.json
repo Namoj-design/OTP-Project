@@ -1,0 +1,20 @@
+{
+  "contracts": {},
+  "tests": {
+    "tests/test_otp.py": {
+      "coverage": false,
+      "isolated": false,
+      "results": "..",
+      "sha1": "5b3ff4e410be543a450bfd1f4b3ad216276e726d",
+      "txhash": []
+    },
+    "tests/test_pad_state.py": {
+      "coverage": false,
+      "isolated": false,
+      "results": "....",
+      "sha1": "5e604bdfac29cc7cba7daf9188d2a89c99377107",
+      "txhash": []
+    }
+  },
+  "tx": {}
+}
