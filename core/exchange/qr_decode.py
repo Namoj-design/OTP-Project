@@ -2,7 +2,7 @@
 
 import base64
 from PIL import Image
-from pyzbar.pyzbar import decode  # type: ignore
+from pyzbar.pyzbar import decode 
 
 from core.exchange.markers import parse_frame
 
