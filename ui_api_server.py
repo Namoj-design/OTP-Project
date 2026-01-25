@@ -71,6 +71,7 @@ class ExportQRRequest(BaseModel):
 
 class ImportQRRequest(BaseModel):
     frames_dir: str
+    expected_hash: str | None = None
 
 @app.post("/export_qr")
 def export_qr(req: ExportQRRequest):
@@ -83,5 +84,5 @@ def export_qr(req: ExportQRRequest):
 
 @app.post("/import_qr")
 def import_qr(req: ImportQRRequest):
-    pad_id = import_pad_from_qr(req.frames_dir)
+    pad_id = import_pad_from_qr(req.frames_dir, req.expected_hash)
     return {"pad_id": pad_id}
