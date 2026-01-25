@@ -1,5 +1,6 @@
 # ui_api_server.py
 
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -9,6 +10,13 @@ from core.client.offset_store import load_offsets
 
 
 app = FastAPI(title="OTP Local UI API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class GeneratePadRequest(BaseModel):
