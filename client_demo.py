@@ -31,6 +31,7 @@ def main():
 
     alice_sm.on_ready()
     bob_sm.on_ready()
+    bob_sm.on_send()   # enter waiting state (S3) before receiving
 
     # Alice sends message
     plaintext = b"HELLO CLIENT STATE"
