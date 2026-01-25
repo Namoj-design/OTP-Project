@@ -65,3 +65,10 @@ def encrypt(req: EncryptRequest):
         "length": packet.length,
         "ciphertext": packet.ciphertext.hex()
     }
+
+class ExportQRRequest(BaseModel):
+    pad_id: str
+
+
+class ImportQRRequest(BaseModel):
+    frames_dir: str
