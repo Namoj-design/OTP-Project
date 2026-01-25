@@ -1,5 +1,7 @@
 # ui_api_server.py
 
+from core.api.exchange_api import export_pad_to_qr, import_pad_from_qr
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
