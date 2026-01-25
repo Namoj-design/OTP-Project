@@ -13,6 +13,7 @@ export default function QRExchange({
 }) {
   const [status, setStatus] = useState<string | null>(null);
   const [framesDir, setFramesDir] = useState("");
+  const [expectedHash, setExpectedHash] = useState("");
 
   const handleExport = async () => {
     if (!padId) {
@@ -32,7 +33,11 @@ export default function QRExchange({
       return;
     }
 
-    const result = await importPadFromQR(framesDir);
+    const result = await importPadFromQR(
+      framesDir,
+      expectedHash || undefined
+    );
+
     setStatus(`Imported pad: ${result.pad_id}`);
     onPadImported(result.pad_id);
   };
@@ -51,6 +56,13 @@ export default function QRExchange({
           placeholder="Path to QR frames directory"
           value={framesDir}
           onChange={(e) => setFramesDir(e.target.value)}
+          style={{ width: "400px" }}
+        />
+        <input
+          type="text"
+          placeholder="Expected pad hash (optional)"
+          value={expectedHash}
+          onChange={(e) => setExpectedHash(e.target.value)}
           style={{ width: "400px" }}
         />
         <br /><br />
