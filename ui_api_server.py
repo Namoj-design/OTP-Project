@@ -72,3 +72,17 @@ class ExportQRRequest(BaseModel):
 
 class ImportQRRequest(BaseModel):
     frames_dir: str
+
+@app.post("/export_qr")
+def export_qr(req: ExportQRRequest):
+    output_dir, frame_count = export_pad_to_qr(req.pad_id)
+    return {
+        "output_dir": output_dir,
+        "frames": frame_count,
+    }
+
+
+@app.post("/import_qr")
+def import_qr(req: ImportQRRequest):
+    pad_id = import_pad_from_qr(req.frames_dir)
+    return {"pad_id": pad_id}
