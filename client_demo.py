@@ -11,9 +11,10 @@ from core.client.state_machine import ClientStateMachine
 
 def main():
     print("=== Phase 6 — Client State + Crash Safety Demo ===")
+    import uuid
+    pad_id = f"demo-pad-{uuid.uuid4()}"
 
     pad_bytes = b"THIS_IS_A_SECRET_PAD_1234567890"
-    pad_id = "demo-pad-002"
 
     # Alice
     alice_manager = PadManager(pad_id, pad_bytes)
