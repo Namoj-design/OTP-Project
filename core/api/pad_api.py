@@ -25,6 +25,15 @@ def generate_pad_from_image(image_path: str, owner="local-user"):
     from core.pad.pad_hash import hash_pad
     pad_hash = hash_pad(pad_bytes)
 
+    # Register pad metadata for status tracking
+    from core.pad.pad_registry import register_pad
+    register_pad(
+        pad_id=pad_id,
+        pad_hash=pad_hash,
+        owner=owner,
+        size=len(pad_bytes),
+    )
+
     return {
         "pad_id": pad_id,
         "pad_size": len(pad_bytes),
