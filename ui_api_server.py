@@ -31,7 +31,11 @@ class EncryptRequest(BaseModel):
 
 @app.post("/generate_pad")
 def generate_pad(req: GeneratePadRequest):
-    pad_id, pad_hash = generate_pad_from_image(req.image_path)
+    result = generate_pad_from_image(req.image_path)
+
+    pad_id = result["pad_id"]
+    pad_hash = result["pad_hash"]
+    pad_size = result["pad_size"]
     return {"pad_id": pad_id, "pad_hash": pad_hash}
 
 
