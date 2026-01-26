@@ -14,6 +14,10 @@ def save_pad(pad_bytes: bytes) -> str:
     pad_id = str(uuid.uuid4())
     path = os.path.join(PAD_DIR, f"{pad_id}.bin")
 
+   # Defensive: handle accidental tuple (pad_bytes, pad_id)
+    if isinstance(pad_bytes, tuple):
+        pad_bytes = pad_bytes[0]
+        
     with open(path, "wb") as f:
         f.write(pad_bytes)
 
