@@ -1,20 +1,19 @@
 # core/client/decryptor.py
+from core.crypto.otp import xor_bytes
+from core.pad.pad_store import load_pad
+from core.pad.pad_registry import get_pad_metadata
 
-from core.crypto.otp import decrypt
+def decrypt_message(pad_id: str, ciphertext: bytes, offset: int) -> bytes:
+    meta = get_pad_metadata(pad_id)
+    pad = load_pad(pad_id)
 
+    if offset != meta["offset_in"]:
+        raise ValueError("Replay or out-of-order message detected")
 
-class Decryptor:
-    def __init__(self, pad_manager):
-        self.pad_manager = pad_manager
+    length = len(ciphertext)
+    key_slice = pad[offset:offset+length]
 
-    def decrypt_packet(self, packet):
-        state = self.pad_manager.state
+    plaintext = xor_bytes(ciphertext, key_slice)
 
-        if packet.offset != state.offset_in:
-            raise ValueError("Offset mismatch — possible replay or loss")
-
-        pad_segment = state.consume_in(packet.length)
-        plaintext = decrypt(packet.ciphertext, pad_segment)
-
-        self.pad_manager.persist()
-        return plaintext
+    meta["offset_in"] += length
+    return plaintext
