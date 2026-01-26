@@ -27,10 +27,11 @@ def register_pad(pad_id, pad_hash, owner, size):
     registry = _load_registry()
 
     registry[pad_id] = {
-        "hash": pad_hash,
+        "pad_hash": pad_hash,
         "owner": owner,
-        "created_at": datetime.utcnow().isoformat(),
-        "used": False
+        "size": size,
+        "offset_out": 0,
+        "offset_in": 0,
     }
 
     _save_registry(registry)
