@@ -15,7 +15,7 @@ def generate_pad_from_image(image_path: str, owner="local-user"):
     bits = von_neumann_extract(bits)
 
     # Create pad bytes from extracted bits
-    pad_bytes = create_pad_from_bits(bits, owner)
+    pad_bytes, _ = create_pad_from_bits(bits, owner)
 
     # Persist pad and get pad_id
     from core.pad.pad_store import store_pad
