@@ -208,5 +208,19 @@
     "owner": "local-user",
     "created_at": "2026-01-26T09:05:40.795704",
     "used": false
+  },
+  "59b1ffec-aed0-4db0-8eee-2c5cfcacfafa": {
+    "pad_hash": "74360129900afa73ae86ea4e715ef8ff9ad5255e6a978dba5e1085a9a8b495fb",
+    "owner": "local-user",
+    "size": 8559,
+    "offset_out": 0,
+    "offset_in": 0
+  },
+  "b5d737b2-18f9-4ff2-a9eb-29c07a4875d7": {
+    "pad_hash": "74360129900afa73ae86ea4e715ef8ff9ad5255e6a978dba5e1085a9a8b495fb",
+    "owner": "local-user",
+    "size": 8559,
+    "offset_out": 0,
+    "offset_in": 0
   }
 }

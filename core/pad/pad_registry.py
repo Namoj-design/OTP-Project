@@ -1,32 +1,10 @@
 # core/pad/pad_registry.py
 
-import json
-import os
-from datetime import datetime
+PAD_REGISTRY = {}
 
 
-REGISTRY_PATH = "data/pads/registry.json"
-
-
-def _load_registry():
-    if not os.path.exists(REGISTRY_PATH):
-        return {}
-
-    with open(REGISTRY_PATH, "r") as f:
-        return json.load(f)
-
-
-def _save_registry(registry):
-    os.makedirs(os.path.dirname(REGISTRY_PATH), exist_ok=True)
-
-    with open(REGISTRY_PATH, "w") as f:
-        json.dump(registry, f, indent=2)
-
-
-def register_pad(pad_id, pad_hash, owner, size):
-    registry = _load_registry()
-
-    registry[pad_id] = {
+def register_pad(pad_id: str, pad_hash: str, owner: str, size: int):
+    PAD_REGISTRY[pad_id] = {
         "pad_hash": pad_hash,
         "owner": owner,
         "size": size,
@@ -34,23 +12,22 @@ def register_pad(pad_id, pad_hash, owner, size):
         "offset_in": 0,
     }
 
-    _save_registry(registry)
-
-
-def mark_used(pad_id: str):
-    registry = _load_registry()
-
-    if pad_id not in registry:
-        raise KeyError("Pad not registered")
-
-    registry[pad_id]["used"] = True
-    _save_registry(registry)
-
 
 def get_pad_metadata(pad_id: str):
-    registry = _load_registry()
-
-    if pad_id not in registry:
+    if pad_id not in PAD_REGISTRY:
         raise KeyError("Pad not registered")
 
-    return registry[pad_id]
+    return PAD_REGISTRY[pad_id]
+
+
+def update_offsets(pad_id: str, offset_out: int = None, offset_in: int = None):
+    if pad_id not in PAD_REGISTRY:
+        raise KeyError("Pad not registered")
+
+    meta = PAD_REGISTRY[pad_id]
+
+    if offset_out is not None:
+        meta["offset_out"] = offset_out
+
+    if offset_in is not None:
+        meta["offset_in"] = offset_in
