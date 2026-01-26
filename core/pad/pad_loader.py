@@ -5,17 +5,27 @@ from core.pad.pad_hash import hash_pad
 from core.pad.pad_registry import get_pad_metadata
 
 
-def load_and_verify_pad(pad_id: str) -> bytes:
+def load_and_verify_pad(pad_id: str):
     pad_bytes = load_pad(pad_id)
-    actual_hash = hash_pad(pad_bytes)
-
     meta = get_pad_metadata(pad_id)
-    expected_hash = meta["hash"]
 
-    if actual_hash != expected_hash:
-        raise ValueError("Pad integrity verification failed")
+    computed_hash = hash_pad(pad_bytes)
+    expected_hash = meta["pad_hash"]
 
-    if meta["used"]:
-        raise ValueError("Pad has already been marked as used")
+    if computed_hash != expected_hash:
+        raise ValueError("Pad hash mismatch")
 
-    return pad_bytes
+    size = meta["size"]
+    offset_out = meta["offset_out"]
+    offset_in = meta["offset_in"]
+
+    remaining = size - max(offset_out, offset_in)
+
+    return {
+        "pad_id": pad_id,
+        "pad_size": size,
+        "pad_hash": expected_hash,
+        "offset_out": offset_out,
+        "offset_in": offset_in,
+        "remaining": remaining,
+    }
