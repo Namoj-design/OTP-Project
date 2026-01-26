@@ -1,6 +1,7 @@
 import { generatePad } from "./pad";
 
 export async function captureEntropyAndGeneratePad() {
-  // For now: fixed image path (real camera later)
-  return generatePad("data/sample_images/test.jpg");
+  // temporary static image until camera UI
+  const imagePath = "data/sample_images/test.jpg";
+  return generatePad(imagePath);
 }
