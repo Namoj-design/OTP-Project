@@ -36,7 +36,11 @@ def generate_pad(req: GeneratePadRequest):
     pad_id = result["pad_id"]
     pad_hash = result["pad_hash"]
     pad_size = result["pad_size"]
-    return {"pad_id": pad_id, "pad_hash": pad_hash}
+    return {
+        "pad_id": pad_id,
+        "pad_size": pad_size,
+        "pad_hash": pad_hash,
+    }
 
 
 @app.get("/pad_status/{pad_id}")
