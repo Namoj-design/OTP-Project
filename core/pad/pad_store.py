@@ -8,16 +8,20 @@ def load_pad(pad_id: str) -> bytes:
     with open(path, "rb") as f:
         return f.read()
 
-def save_pad(pad_bytes: bytes) -> str:
+def save_pad(pad_bytes) -> str:
     os.makedirs(PAD_DIR, exist_ok=True)
+
+    # Defensive: unwrap accidental tuple (pad_bytes, pad_id)
+    if isinstance(pad_bytes, tuple):
+        pad_bytes = pad_bytes[0]
+
+    # Defensive: handle accidental str instead of bytes
+    if isinstance(pad_bytes, str):
+        pad_bytes = pad_bytes.encode("utf-8")
 
     pad_id = str(uuid.uuid4())
     path = os.path.join(PAD_DIR, f"{pad_id}.bin")
 
-   # Defensive: handle accidental tuple (pad_bytes, pad_id)
-    if isinstance(pad_bytes, tuple):
-        pad_bytes = pad_bytes[0]
-        
     with open(path, "wb") as f:
         f.write(pad_bytes)
 
