@@ -1,42 +1,42 @@
-// frontend/src/ui/PadManager.tsx
+import { useState } from "react";
+import { captureEntropyAndGeneratePad } from "../bridge/entropy";
+import { getPadStatus, PadStatus } from "../bridge/pad";
+import { exportPadToQR } from "../bridge/exchange";
 
-import React, { useState } from "react";
-import { generatePad, getPadStatus, PadStatus } from "../bridge/pad";
-
-export default function PadManager({
-  onPadReady,
-}: {
-  onPadReady: (padId: string) => void;
-}) {
+export default function PadManager() {
   const [padStatus, setPadStatus] = useState<PadStatus | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string>("");
 
   const handleGenerate = async () => {
     try {
-      setError(null);
-
-      const result = await generatePad("data/sample_images/test.jpg");
+      const result = await captureEntropyAndGeneratePad();
       const status = await getPadStatus(result.pad_id);
-
       setPadStatus(status);
-      onPadReady(result.pad_id);
-    } catch (err: any) {
-      setError(err.message || "Failed to generate pad");
+      setStatus("Pad generated");
+    } catch {
+      setStatus("Failed to generate pad");
+    }
+  };
+
+  const handleExport = async () => {
+    if (!padStatus) return;
+
+    try {
+      const result = await exportPadToQR(padStatus.pad_id);
+      setStatus(`Exported ${result.frame_count} frames to ${result.frames_dir}`);
+    } catch {
+      setStatus("Failed to export pad to QR");
     }
   };
 
   return (
     <div>
-      <h3>Pad Manager</h3>
+      <h2>Pad Manager</h2>
 
-      <button onClick={handleGenerate}>
-        Generate Pad (from entropy)
-      </button>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button onClick={handleGenerate}>Generate Pad (from entropy)</button>
 
       {padStatus && (
-        <div style={{ marginTop: "1rem" }}>
+        <div>
           <p><b>Pad ID:</b> {padStatus.pad_id}</p>
           <p><b>Pad Size:</b> {padStatus.pad_size}</p>
           <p><b>Pad Hash:</b> {padStatus.pad_hash}</p>
@@ -45,6 +45,11 @@ export default function PadManager({
           <p><b>Remaining:</b> {padStatus.remaining}</p>
         </div>
       )}
+
+      <h3>QR Pad Exchange</h3>
+      <button onClick={handleExport}>Export Pad to QR Frames</button>
+
+      {status && <p>{status}</p>}
     </div>
   );
 }
