@@ -23,7 +23,7 @@ def _save_registry(registry):
         json.dump(registry, f, indent=2)
 
 
-def register_pad(pad_id: str, pad_hash: str, owner: str):
+def register_pad(pad_id, pad_hash, owner, size):
     registry = _load_registry()
 
     registry[pad_id] = {
