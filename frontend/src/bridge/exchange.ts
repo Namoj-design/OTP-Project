@@ -1,25 +1,17 @@
+// frontend/src/bridge/exchange.ts
+
+const API_BASE = "http://127.0.0.1:9000";
+
 export async function exportPadToQR(padId: string) {
-    const res = await fetch("http://127.0.0.1:9000/export_qr", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pad_id: padId }),
-    });
-  
-    return res.json();
+  const res = await fetch(`${API_BASE}/export_qr`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ pad_id: padId }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to export pad to QR");
   }
-  
-  export async function importPadFromQR(
-    framesDir: string,
-    expectedHash?: string
-  ) {
-    const res = await fetch("http://127.0.0.1:9000/import_qr", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        frames_dir: framesDir,
-        expected_hash: expectedHash ?? null,
-      }),
-    });
-  
-    return res.json();
-  }
+
+  return res.json();
+}
