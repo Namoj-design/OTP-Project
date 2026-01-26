@@ -1,29 +1,29 @@
 # core/api/pad_api.py
-
-from core.pad.pad_loader import load_and_verify_pad
-from core.pad.pad_generator import create_pad_from_bits
+import os
 from core.entropy.camera import load_image_pixels
 from core.entropy.rgb_collapse import pixels_to_bits
 from core.entropy.thinning import thin_bits
 from core.entropy.von_neumann import von_neumann_extract
 
+from core.pad.pad_generator import create_pad_from_bits
+from core.pad.pad_store import save_pad, load_pad
+from core.pad.pad_hash import hash_pad
+from core.pad.pad_registry import register_pad, get_pad_metadata
 
 def generate_pad_from_image(image_path: str, owner="local-user"):
+    if not os.path.exists(image_path):
+        raise ValueError("Entropy image not found")
+
     pixels = load_image_pixels(image_path)
     bits = pixels_to_bits(pixels)
     bits = thin_bits(bits, k=3)
     bits = von_neumann_extract(bits)
 
-    # bytes only
-    pad_bytes = create_pad_from_bits(bits)
+    pad_bytes = create_pad_from_bits(bits, owner)
 
-    from core.pad.pad_store import save_pad
     pad_id = save_pad(pad_bytes)
-
-    from core.pad.pad_hash import hash_pad
     pad_hash = hash_pad(pad_bytes)
 
-    from core.pad.pad_registry import register_pad
     register_pad(
         pad_id=pad_id,
         pad_hash=pad_hash,
@@ -38,5 +38,16 @@ def generate_pad_from_image(image_path: str, owner="local-user"):
     }
 
 
-def load_pad(pad_id: str):
-    return load_and_verify_pad(pad_id)
+def pad_status(pad_id: str):
+    meta = get_pad_metadata(pad_id)
+
+    remaining = meta["size"] - meta["offset_out"]
+
+    return {
+        "pad_id": pad_id,
+        "pad_size": meta["size"],
+        "pad_hash": meta["pad_hash"],
+        "offset_out": meta["offset_out"],
+        "offset_in": meta["offset_in"],
+        "remaining": remaining,
+    }
