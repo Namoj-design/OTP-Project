@@ -14,18 +14,15 @@ def generate_pad_from_image(image_path: str, owner="local-user"):
     bits = thin_bits(bits, k=3)
     bits = von_neumann_extract(bits)
 
-    # Create pad bytes from extracted bits
+    # bytes only
     pad_bytes = create_pad_from_bits(bits)
 
-    # Persist pad and get pad_id
     from core.pad.pad_store import save_pad
     pad_id = save_pad(pad_bytes)
 
-    # Compute cryptographic hash of pad bytes
     from core.pad.pad_hash import hash_pad
     pad_hash = hash_pad(pad_bytes)
 
-    # Register pad metadata for status tracking
     from core.pad.pad_registry import register_pad
     register_pad(
         pad_id=pad_id,
