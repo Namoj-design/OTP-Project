@@ -27,50 +27,76 @@ export default function PadManager({ onPadReady }: PadManagerProps) {
   };
 
   return (
-    <div style={{ padding: "1rem", border: "1px solid #ccc", borderRadius: "8px", marginBottom: "2rem" }}>
-      <h2>Pad Manager</h2>
+    <div className="card">
+      <h2 style={{ marginTop: 0 }}>Pad Manager</h2>
 
-      <div style={{ marginBottom: "1rem" }}>
-        <label style={{ display: "block", marginBottom: "0.5rem" }}>Entropy Source Image Path:</label>
-        <input
-          type="text"
-          value={imagePath}
-          onChange={(e) => setImagePath(e.target.value)}
-          style={{ width: "100%", padding: "0.5rem" }}
-        />
+      <div className="grid-2">
+        <div>
+          <label className="label">Entropy Source Image Path</label>
+          <input
+            type="text"
+            className="input-field"
+            value={imagePath}
+            onChange={(e) => setImagePath(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="label">Owner ID</label>
+          <input
+            type="text"
+            className="input-field"
+            value={owner}
+            onChange={(e) => setOwner(e.target.value)}
+          />
+        </div>
       </div>
 
-      <div style={{ marginBottom: "1rem" }}>
-        <label style={{ display: "block", marginBottom: "0.5rem" }}>Owner ID:</label>
-        <input
-          type="text"
-          value={owner}
-          onChange={(e) => setOwner(e.target.value)}
-          style={{ width: "100%", padding: "0.5rem" }}
-        />
+      <div style={{ marginTop: "1.5rem" }}>
+        <button className="btn" onClick={handleGenerate}>
+          Generate Pad (from entropy)
+        </button>
       </div>
 
-      <button
-        onClick={handleGenerate}
-        style={{ padding: "0.5rem 1rem", backgroundColor: "#007bff", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
-      >
-        Generate Pad (from entropy)
-      </button>
-
-      {status && <p style={{ marginTop: "1rem", fontWeight: "bold" }}>{status}</p>}
+      {status && (
+        <div style={{
+          marginTop: "1.5rem",
+          padding: "1rem",
+          background: status.includes("Fail") ? "#fee2e2" : "#dcfce7",
+          color: status.includes("Fail") ? "#991b1b" : "#166534",
+          borderRadius: "var(--radius)"
+        }}>
+          <b>Status:</b> {status}
+        </div>
+      )}
 
       {padStatus && (
-        <div style={{ marginTop: "1rem", backgroundColor: "#f8f9fa", padding: "1rem", borderRadius: "4px" }}>
-          <h3 style={{ marginTop: 0 }}>Active Pad Status</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "0.5rem 1rem" }}>
-            <b>Pad ID:</b> <code>{padStatus.pad_id}</code>
-            <b>Size:</b> <span>{padStatus.pad_size} bytes</span>
-            <b>Offset Out:</b> <span>{padStatus.offset_out}</span>
-            <b>Offset In:</b> <span>{padStatus.offset_in}</span>
-            <b>Remaining:</b> <span>{padStatus.remaining} bytes</span>
+        <div style={{
+          marginTop: "1.5rem",
+          backgroundColor: "#f9fafb",
+          padding: "1.5rem",
+          borderRadius: "var(--radius)",
+          border: "1px solid var(--border-color)"
+        }}>
+          <h3 style={{ marginTop: 0, fontSize: "1.1rem" }}>Active Pad Status</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "0.5rem 1.5rem", alignItems: "baseline" }}>
+            <span style={{ color: "var(--text-muted)" }}>Pad ID:</span>
+            <code>{padStatus.pad_id}</code>
+
+            <span style={{ color: "var(--text-muted)" }}>Size:</span>
+            <span>{padStatus.pad_size.toLocaleString()} bytes</span>
+
+            <span style={{ color: "var(--text-muted)" }}>Remaining:</span>
+            <span style={{ color: padStatus.remaining < 1000 ? "#dc2626" : "inherit", fontWeight: "600" }}>
+              {padStatus.remaining.toLocaleString()} bytes
+            </span>
+
+            <span style={{ color: "var(--text-muted)" }}>Offsets:</span>
+            <span>Out: {padStatus.offset_out} / In: {padStatus.offset_in}</span>
           </div>
-          <div style={{ marginTop: "0.5rem" }}>
-            <b>Hash:</b> <code style={{ wordBreak: "break-all" }}>{padStatus.pad_hash}</code>
+          <div style={{ marginTop: "1rem" }}>
+            <div style={{ color: "var(--text-muted)", marginBottom: "0.25rem", fontSize: "0.9em" }}>Hash</div>
+            <code style={{ wordBreak: "break-all", fontSize: "0.8em", display: "block" }}>{padStatus.pad_hash}</code>
           </div>
         </div>
       )}

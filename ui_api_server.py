@@ -1,7 +1,9 @@
 # ui_api_server.py
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import os
 
 from core.api.pad_api import generate_pad_from_image, pad_status
 from core.api.exchange_api import export_pad_to_qr, import_pad_from_qr
@@ -10,6 +12,12 @@ from core.pad.pad_loader import load_pad_bytes
 from core.protocol.message import MessagePacket
 
 app = FastAPI(title="OTP Secure Messaging API")
+
+# Ensure QR directory exists
+os.makedirs("data/qr_frames", exist_ok=True)
+
+# Mount static files
+app.mount("/qr_images", StaticFiles(directory="data/qr_frames"), name="qr_images")
 
 app.add_middleware(
     CORSMiddleware,

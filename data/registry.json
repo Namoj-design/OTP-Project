@@ -1,3 +1,49 @@
 {
-  "pads": {}
+  "pads": {
+    "6f9e873d-9969-4119-be7e-227c8723da1b": {
+      "pad_id": "6f9e873d-9969-4119-be7e-227c8723da1b",
+      "pad_hash": "a29169ff34387a64cb5e292275d87bca35f6d9ee273e80860fabac0bd6b59fd4",
+      "owner": "local-user",
+      "size": 8623,
+      "created_at": "1770541111.8388433",
+      "offset_out": 0,
+      "offset_in": 0
+    },
+    "0d4b69e3-54cc-4de3-ab08-9a1719ec3d4c": {
+      "pad_id": "0d4b69e3-54cc-4de3-ab08-9a1719ec3d4c",
+      "pad_hash": "19c7ea2f92441aabb59ceffa070a05cc4b0a8c8f3bc4ae88244e2471755a9cec",
+      "owner": "local-user",
+      "size": 8623,
+      "created_at": "1770543540.4174843",
+      "offset_out": 0,
+      "offset_in": 0
+    },
+    "b0d8452a-e50e-417f-a93f-48c464d2f789": {
+      "pad_id": "b0d8452a-e50e-417f-a93f-48c464d2f789",
+      "pad_hash": "19c7ea2f92441aabb59ceffa070a05cc4b0a8c8f3bc4ae88244e2471755a9cec",
+      "owner": "imported-pad",
+      "size": 8623,
+      "created_at": "1770543593.7846642",
+      "offset_out": 3,
+      "offset_in": 3
+    },
+    "1beb5dcc-bffc-4503-b95c-b3d3a6a0af22": {
+      "pad_id": "1beb5dcc-bffc-4503-b95c-b3d3a6a0af22",
+      "pad_hash": "d7d2ba259d9642c28d9237d01f544a09af446a0f0ecc0af8a34cffc5e0a09343",
+      "owner": "local-user",
+      "size": 8623,
+      "created_at": "1770543616.2028344",
+      "offset_out": 0,
+      "offset_in": 0
+    },
+    "418974ef-5780-47f7-be51-0e500439fcb6": {
+      "pad_id": "418974ef-5780-47f7-be51-0e500439fcb6",
+      "pad_hash": "d7d2ba259d9642c28d9237d01f544a09af446a0f0ecc0af8a34cffc5e0a09343",
+      "owner": "imported-pad",
+      "size": 8623,
+      "created_at": "1770545108.7736862",
+      "offset_out": 2,
+      "offset_in": 2
+    }
+  }
 }

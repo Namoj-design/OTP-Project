@@ -14,8 +14,22 @@ export default function App() {
   };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif", maxWidth: "1200px", margin: "0 auto" }}>
-      <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>OTP Secure Messenger</h1>
+    <div className="container">
+      <header style={{ marginBottom: "3rem", textAlign: "center" }}>
+        <h1 style={{
+          fontSize: "2.5rem",
+          fontWeight: "800",
+          background: "linear-gradient(to right, #4f46e5, #06b6d4)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          margin: 0
+        }}>
+          OTP Secure Messenger
+        </h1>
+        <p style={{ color: "var(--text-muted)", marginTop: "0.5rem" }}>
+          Shannon Perfect Secrecy • Air-Gapped • Crash-Safe
+        </p>
+      </header>
 
       <StateBanner currentState={appState} padId={activePadId} />
 
@@ -25,8 +39,6 @@ export default function App() {
         padId={activePadId}
         onPadImported={handlePadReady}
       />
-
-      <hr style={{ margin: "2rem 0" }} />
 
       <ChatView
         padId={activePadId}

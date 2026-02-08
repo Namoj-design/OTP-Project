@@ -29,3 +29,10 @@ def load_and_verify_pad(pad_id: str):
         "offset_in": offset_in,
         "remaining": remaining,
     }
+
+
+def load_pad_bytes(pad_id: str) -> bytes:
+    """
+    Simple wrapper to load raw pad bytes.
+    """
+    return load_pad(pad_id)

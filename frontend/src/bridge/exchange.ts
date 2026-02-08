@@ -20,6 +20,7 @@ export async function exportPadToQR(padId: string, outputDir: string = "data/qr_
   return await res.json() as {
     frames_dir: string;
     frame_count: number;
+    images?: string[];
   };
 }
 

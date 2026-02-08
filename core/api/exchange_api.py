@@ -9,9 +9,13 @@ def export_pad_to_qr(pad_id: str, output_dir: str):
     pad_bytes = load_pad(pad_id)
     frames_dir, frame_count = pad_to_qr_frames(pad_bytes, output_dir=output_dir)
 
+    # Get list of generated files, sorted
+    images = sorted([f for f in os.listdir(frames_dir) if f.endswith(".png")])
+
     return {
         "frames_dir": frames_dir,
         "frame_count": frame_count,
+        "images": images
     }
 
 
