@@ -16,8 +16,17 @@ class PadManager:
         self.state.offset_in = inc
 
     def persist(self):
+        # Save to atomic offset store
         save_offsets(
             self.pad_id,
             self.state.offset_out,
             self.state.offset_in
+        )
+        
+        # Also update registry for visibility
+        from core.pad.pad_registry import update_offsets
+        update_offsets(
+            self.pad_id,
+            offset_in=self.state.offset_in,
+            offset_out=self.state.offset_out
         )

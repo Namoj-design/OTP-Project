@@ -7,11 +7,14 @@ export type PadStatus = {
   remaining: number;
 };
 
-export async function generatePad(imagePath: string) {
+export async function generatePad(imagePath: string, owner: string = "local-user") {
   const res = await fetch("http://127.0.0.1:9000/generate_pad", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ image_path: imagePath }),
+    body: JSON.stringify({
+      image_path: imagePath,
+      owner: owner
+    }),
   });
 
   if (!res.ok) throw new Error("generate_pad failed");

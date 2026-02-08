@@ -8,11 +8,8 @@ from core.exchange.chunking import chunk_bytes
 from core.exchange.markers import make_frame
 
 
-QR_DIR = "data/qr_frames"
-
-
-def pad_to_qr_frames(pad_bytes: bytes, chunk_size: int = 800):
-    os.makedirs(QR_DIR, exist_ok=True)
+def pad_to_qr_frames(pad_bytes: bytes, output_dir: str = "data/qr_frames", chunk_size: int = 800) -> tuple[str, int]:
+    os.makedirs(output_dir, exist_ok=True)
 
     chunks = chunk_bytes(pad_bytes, chunk_size)
     total = len(chunks)
@@ -28,9 +25,9 @@ def pad_to_qr_frames(pad_bytes: bytes, chunk_size: int = 800):
         b64 = base64.b64encode(frame).decode("ascii")
 
         img = qrcode.make(b64)
-        path = os.path.join(QR_DIR, f"frame_{i:04d}.png")
+        path = os.path.join(output_dir, f"frame_{i:04d}.png")
         img.save(path)
 
         frame_paths.append(path)
 
-    return frame_paths
+    return output_dir, len(frame_paths)

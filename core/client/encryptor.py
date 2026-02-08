@@ -1,20 +1,33 @@
-# core/client/encryptor.py
-from core.crypto.otp import xor_bytes
-from core.pad.pad_store import load_pad
-from core.pad.pad_registry import get_pad_metadata
+from core.crypto.otp import encrypt
+from core.protocol.message import MessagePacket
 
-def encrypt_message(pad_id: str, plaintext: bytes) -> bytes:
-    meta = get_pad_metadata(pad_id)
-    pad = load_pad(pad_id)
 
-    offset = meta["offset_out"]
-    length = len(plaintext)
+class Encryptor:
+    def __init__(self, pad_manager):
+        self.manager = pad_manager
 
-    if offset + length > meta["size"]:
-        raise ValueError("Pad exhausted")
+    def encrypt_message(self, plaintext: bytes) -> MessagePacket:
+        # Get length
+        length = len(plaintext)
+        
+        # Current offset for packet metadata (before consumption)
+        offset = self.manager.state.offset_out
 
-    key_slice = pad[offset:offset+length]
-    ciphertext = xor_bytes(plaintext, key_slice)
+        # Consume pad bytes (raises PadExhausted if not enough)
+        pad_segment = self.manager.state.consume_out(length)
 
-    meta["offset_out"] += length
-    return ciphertext
+        # Encrypt
+        ciphertext = encrypt(plaintext, pad_segment)
+
+        # Persist state
+        self.manager.persist()
+
+        # Create packet
+        packet = MessagePacket(
+            pad_id=self.manager.pad_id,
+            offset=offset,
+            length=length,
+            ciphertext=ciphertext
+        )
+
+        return packet

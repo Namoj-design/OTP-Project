@@ -2,11 +2,14 @@
 
 const API_BASE = "http://127.0.0.1:9000";
 
-export async function exportPadToQR(padId: string) {
+export async function exportPadToQR(padId: string, outputDir: string = "data/qr_frames") {
   const res = await fetch(`${API_BASE}/export_qr`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ pad_id: padId }),
+    body: JSON.stringify({
+      pad_id: padId,
+      output_dir: outputDir
+    }),
   });
 
   if (!res.ok) {
